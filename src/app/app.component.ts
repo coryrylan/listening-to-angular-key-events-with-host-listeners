@@ -1,8 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 
 export enum KEY_CODE {
-  RIGHT_ARROW = 39,
-  LEFT_ARROW = 37
+  RIGHT_ARROW = 'ArrowRight',
+  LEFT_ARROW = 'ArrowLeft'
 }
 
 @Component({
@@ -18,11 +18,11 @@ export class AppComponent  {
   keyEvent(event: KeyboardEvent) {
     console.log(event);
     
-    if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
+    if (event.key === KEY_CODE.RIGHT_ARROW) {
       this.increment();
     }
 
-    if (event.keyCode === KEY_CODE.LEFT_ARROW) {
+    if (event.key === KEY_CODE.LEFT_ARROW) {
       this.decrement();
     }
   }
