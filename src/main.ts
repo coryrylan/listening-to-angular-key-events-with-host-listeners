@@ -1,16 +1,55 @@
-import './polyfills';
+import { Component, HostListener } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import 'zone.js';
 
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+export enum KEY_CODE {
+  RIGHT_ARROW = 'ArrowRight',
+  LEFT_ARROW = 'ArrowLeft'
+}
 
-import { AppModule } from './app/app.module';
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  template: `
+    <h1>Angular Host Listeners and Key Events</h1>
 
-platformBrowserDynamic().bootstrapModule(AppModule).then(ref => {
-  // Ensure Angular destroys itself on hot reloads.
-  if (window['ngRef']) {
-    window['ngRef'].destroy();
+    <p>
+      <a href="https://coryrylan.com/blog/listening-to-angular-key-events-with-host-listeners"></a>
+    </p>
+
+    <button (click)="decrement()">-</button>
+    {{value}}
+    <button (click)="increment()">+</button>
+
+    <br><br>
+
+    <a href="https://coryrylan.com/blog/listening-to-angular-key-events-with-host-listeners">Blog Post coryrylan.com</a>
+  `,
+})
+export class App {
+  value = 0;
+  constructor() { }
+  
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    console.log(event);
+    
+    if (event.key === KEY_CODE.RIGHT_ARROW) {
+      this.increment();
+    }
+
+    if (event.key === KEY_CODE.LEFT_ARROW) {
+      this.decrement();
+    }
   }
-  window['ngRef'] = ref;
+  
+  increment() {
+    this.value++;
+  }
+  
+  decrement() {
+    this.value--;
+  }
+}
 
-  // Otherise, log the boot error
-}).catch(err => console.error(err));
+bootstrapApplication(App);
